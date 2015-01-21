@@ -1,4 +1,5 @@
 call pathogen#infect()
+set rtp+=$GOROOT/misc/vim
 filetype plugin indent on
 syntax on
 set background=dark
@@ -14,10 +15,26 @@ if has("multi_byte")
 endif
 
 if argc() == 0
-	autocmd VimEnter * NERDTree
+  autocmd VimEnter * NERDTree
 else
-	autocmd VimEnter NERDTree | wincmd w
+  autocmd VimEnter NERDTree | wincmd w
 endif
 autocmd BufEnter * NERDTreeMirror
 
-let NERDTreeIgnore=['\.pyc$']
+let NERDTreeIgnore=['\.pyc$', '\.o$']
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
+set expandtab
+
+au BufRead,BufNewFile *.thrift set filetype=thrift
+au! Syntax thrift source ~/.vim/syntax/thrift.vim
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
